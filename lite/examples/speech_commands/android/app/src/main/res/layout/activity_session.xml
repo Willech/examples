@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bball_dark_background"
+    tools:context=".SessionActivity">
+
+    <TextView
+        android:id="@+id/textViewPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="@color/bball_grey_text"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="485dp"
+        tools:text="23%" />
+
+    <TextView
+        android:id="@+id/TextViewSessionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:fontFamily="monospace"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/bball_grey_text"
+        android:textSize="24sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="RUNNING SESSION" />
+
+    <TextView
+        android:id="@+id/textViewZoneName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="monospace"
+        android:textColor="@color/bball_grey_text_faded"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewSessionName"
+        tools:text="FREE THROW LINE" />
+
+    <TextView
+        android:id="@+id/textViewTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textColor="@color/bball_grey_text"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewZoneName"
+        tools:text="00.00.00" />
+
+    <TextView
+        android:id="@+id/textViewMakesCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="@color/bball_grey_text"
+        android:textSize="50sp"
+        tools:layout_editor_absoluteX="125dp"
+        tools:layout_editor_absoluteY="399dp"
+        tools:text="23" />
+
+    <TextView
+        android:id="@+id/textViewTotalCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextViewTotalCount"
+        android:textColor="@color/bball_grey_text"
+        android:textSize="50sp"
+        tools:layout_editor_absoluteX="216dp"
+        tools:layout_editor_absoluteY="399dp"
+        tools:text="100" />
+
+    <TextView
+        android:id="@+id/textViewCountSeparator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="@color/bball_grey_text"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewPercentage"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTimer"
+        app:layout_constraintVertical_bias="0.869"
+        tools:layout_editor_absoluteX="195dp"
+        tools:text="/" />
+
+    <Button
+        android:id="@+id/start_stop_btn"
+
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/buttonshape"
+
+        android:text="Start"
+        android:textColor="@color/bball_orange"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPercentage"
+        app:layout_constraintVertical_bias="0.422" />
+
+    <View
+        android:id="@+id/innerlogo"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/innerlogo_vector"
+        tools:layout_editor_absoluteX="192dp"
+        tools:layout_editor_absoluteY="38dp" />
+
+    <View
+        android:id="@+id/outerlogo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/circle_vector"
+        tools:layout_editor_absoluteX="180dp"
+        tools:layout_editor_absoluteY="26dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

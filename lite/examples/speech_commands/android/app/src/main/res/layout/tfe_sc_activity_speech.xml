@@ -19,7 +19,7 @@
     android:layout_height="match_parent"
     android:background="#00000000">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -63,29 +63,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/yes"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight=".5"
-                    android:background="@drawable/round_corner_text_bg_unselected"
-                    android:gravity="center"
-                    android:text="Yes" />
-
-                <TextView
-                    android:id="@+id/no"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight=".5"
-                    android:background="@drawable/round_corner_text_bg_unselected"
-                    android:gravity="center"
-                    android:text="No" />
-
-            </LinearLayout>
+                android:weightSum="1"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -95,26 +73,33 @@
                 android:weightSum="1">
 
                 <TextView
-                    android:id="@+id/up"
+                    android:id="@+id/make"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight=".5"
                     android:background="@drawable/round_corner_text_bg_unselected"
                     android:gravity="center"
-                    android:text="Up" />
+                    android:text="Make" />
 
                 <TextView
-                    android:id="@+id/down"
+                    android:id="@+id/miss"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight=".5"
                     android:background="@drawable/round_corner_text_bg_unselected"
                     android:gravity="center"
-                    android:text="Down" />
+                    android:text="Miss" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="1"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,24 +109,22 @@
                 android:weightSum="1">
 
                 <TextView
-                    android:id="@+id/left"
+                    android:id="@+id/makeCount"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight=".5"
                     android:background="@drawable/round_corner_text_bg_unselected"
-                    android:gravity="center"
-                    android:text="Left" />
+                    android:gravity="center" />
 
                 <TextView
-                    android:id="@+id/right"
+                    android:id="@+id/missCount"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight=".5"
                     android:background="@drawable/round_corner_text_bg_unselected"
-                    android:gravity="center"
-                    android:text="Right" />
+                    android:gravity="center" />
 
             </LinearLayout>
 
@@ -150,58 +133,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/on"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight=".5"
-                    android:background="@drawable/round_corner_text_bg_unselected"
-                    android:gravity="center"
-                    android:text="On" />
-
-                <TextView
-                    android:id="@+id/off"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight=".5"
-                    android:background="@drawable/round_corner_text_bg_unselected"
-                    android:gravity="center"
-                    android:text="Off" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/stop"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight=".5"
-                    android:background="@drawable/round_corner_text_bg_unselected"
-                    android:gravity="center"
-                    android:text="Stop" />
-
-                <TextView
-                    android:id="@+id/go"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight=".5"
-                    android:background="@drawable/round_corner_text_bg_unselected"
-                    android:gravity="center"
-                    android:text="Go" />
-
-            </LinearLayout>
+                android:weightSum="1"/>
 
         </LinearLayout>
 

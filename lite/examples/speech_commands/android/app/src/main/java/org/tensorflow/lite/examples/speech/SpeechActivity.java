@@ -31,12 +31,16 @@ the RecognizeCommands helper class.
 
 package org.tensorflow.lite.examples.speech;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioRecord;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,6 +48,9 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
+
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -86,10 +93,12 @@ public class SpeechActivity extends Activity
   private static final int MINIMUM_COUNT = 3;
   private static final long MINIMUM_TIME_BETWEEN_SAMPLES_MS = 30;
   private static final String LABEL_FILENAME = "file:///android_asset/conv_actions_labels.txt";
-  private static final String MODEL_FILENAME = "file:///android_asset/conv_actions_frozen.tflite";
+  private static final String MODEL_FILENAME = "file:///android_asset/makeMissModelv01.tflite";
 
   // UI elements.
   private static final int REQUEST_RECORD_AUDIO = 13;
+  private static final int REQUEST_MODIFY_AUDIO_SETTINGS = 14;
+  private static final int REQUEST_BROADCAST_STICKY = 15;
   private static final String LOG_TAG = SpeechActivity.class.getSimpleName();
 
   // Working variables.
@@ -111,16 +120,11 @@ public class SpeechActivity extends Activity
   private Interpreter tfLite;
   private ImageView bottomSheetArrowImageView;
 
-  private TextView yesTextView,
-      noTextView,
-      upTextView,
-      downTextView,
-      leftTextView,
-      rightTextView,
-      onTextView,
-      offTextView,
-      stopTextView,
-      goTextView;
+  private TextView makeTextView, missTextView;
+  private TextView makeCountTextView, missCountTextView;
+  int upCount = 0;
+  int downCount = 0;
+
   private TextView sampleRateTextView, inferenceTimeTextView;
   private ImageView plusImageView, minusImageView;
   private SwitchCompat apiSwitchCompat;
@@ -131,6 +135,8 @@ public class SpeechActivity extends Activity
   private HandlerThread backgroundThread;
   private Handler backgroundHandler;
 
+  private AudioManager GLOBALaudioManager;
+
   /** Memory-map the model file in Assets. */
   private static MappedByteBuffer loadModelFile(AssetManager assets, String modelFilename)
       throws IOException {
@@ -140,6 +146,23 @@ public class SpeechActivity extends Activity
     long startOffset = fileDescriptor.getStartOffset();
     long declaredLength = fileDescriptor.getDeclaredLength();
     return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+  }
+
+  private void playSound(String filename) {
+    try {
+      MediaPlayer mediaPlayer = new MediaPlayer();
+
+      AssetFileDescriptor descriptor = getApplicationContext().getAssets().openFd(filename);
+      mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+      descriptor.close();
+
+      mediaPlayer.prepare();
+      mediaPlayer.setVolume(1f, 1f);
+      mediaPlayer.setLooping(false);
+      mediaPlayer.start();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -189,6 +212,7 @@ public class SpeechActivity extends Activity
 
     // Start the recording and recognition threads.
     requestMicrophonePermission();
+    requestBluetoothPermissions();
     startRecording();
     startRecognition();
 
@@ -204,16 +228,10 @@ public class SpeechActivity extends Activity
     minusImageView = findViewById(R.id.minus);
     apiSwitchCompat = findViewById(R.id.api_info_switch);
 
-    yesTextView = findViewById(R.id.yes);
-    noTextView = findViewById(R.id.no);
-    upTextView = findViewById(R.id.up);
-    downTextView = findViewById(R.id.down);
-    leftTextView = findViewById(R.id.left);
-    rightTextView = findViewById(R.id.right);
-    onTextView = findViewById(R.id.on);
-    offTextView = findViewById(R.id.off);
-    stopTextView = findViewById(R.id.stop);
-    goTextView = findViewById(R.id.go);
+    makeTextView = findViewById(R.id.make);
+    missTextView = findViewById(R.id.miss);
+    makeCountTextView = findViewById(R.id.makeCount);
+    missCountTextView = findViewById(R.id.missCount);
 
     apiSwitchCompat.setOnCheckedChangeListener(this);
 
@@ -263,6 +281,8 @@ public class SpeechActivity extends Activity
     minusImageView.setOnClickListener(this);
 
     sampleRateTextView.setText(SAMPLE_RATE + " Hz");
+
+    GLOBALaudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
   }
 
   private void requestMicrophonePermission() {
@@ -270,6 +290,10 @@ public class SpeechActivity extends Activity
       requestPermissions(
           new String[] {android.Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO);
     }
+  }
+
+  private void requestBluetoothPermissions() {
+    ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.MODIFY_AUDIO_SETTINGS}, REQUEST_MODIFY_AUDIO_SETTINGS);
   }
 
   @Override
@@ -280,6 +304,10 @@ public class SpeechActivity extends Activity
         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
       startRecording();
       startRecognition();
+    }
+    if (requestCode == REQUEST_MODIFY_AUDIO_SETTINGS
+        && grantResults.length > 0
+        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
     }
   }
 
@@ -318,10 +346,11 @@ public class SpeechActivity extends Activity
       bufferSize = SAMPLE_RATE * 2;
     }
     short[] audioBuffer = new short[bufferSize / 2];
+    GLOBALaudioManager.startBluetoothSco();
 
     AudioRecord record =
         new AudioRecord(
-            MediaRecorder.AudioSource.DEFAULT,
+            MediaRecorder.AudioSource.MIC,
             SAMPLE_RATE,
             AudioFormat.CHANNEL_IN_MONO,
             AudioFormat.ENCODING_PCM_16BIT,
@@ -443,37 +472,18 @@ public class SpeechActivity extends Activity
                     labelIndex = i;
                   }
                 }
-
                 switch (labelIndex - 2) {
-                  case 0:
-                    selectedTextView = yesTextView;
-                    break;
-                  case 1:
-                    selectedTextView = noTextView;
-                    break;
                   case 2:
-                    selectedTextView = upTextView;
+                    selectedTextView = makeTextView;
+                    upCount++;
+                    makeCountTextView.setText(Integer.toString(upCount));
+                    playSound("robot-blip.wav");
                     break;
                   case 3:
-                    selectedTextView = downTextView;
-                    break;
-                  case 4:
-                    selectedTextView = leftTextView;
-                    break;
-                  case 5:
-                    selectedTextView = rightTextView;
-                    break;
-                  case 6:
-                    selectedTextView = onTextView;
-                    break;
-                  case 7:
-                    selectedTextView = offTextView;
-                    break;
-                  case 8:
-                    selectedTextView = stopTextView;
-                    break;
-                  case 9:
-                    selectedTextView = goTextView;
+                    selectedTextView = missTextView;
+                    downCount++;
+                    missCountTextView.setText(Integer.toString(downCount));
+                    playSound("chinese-gong.mp3");
                     break;
                 }
 

@@ -3,4 +3,9 @@
     <color name="tfe_color_primary">#ffa800</color>
     <color name="tfe_color_primary_dark">#ff6f00</color>
     <color name="tfe_color_accent">#425066</color>
+    <color name="bball_orange">#E07747</color>
+    <color name="bball_orange_darker">#C54627</color>
+    <color name="bball_grey_text">#AFC1D0</color>
+    <color name="bball_grey_text_faded">#425A6D</color>
+    <color name="bball_dark_background">#0F1728</color>
 </resources>
