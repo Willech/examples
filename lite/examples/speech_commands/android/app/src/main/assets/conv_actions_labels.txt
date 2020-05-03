@@ -2,11 +2,13 @@ _silence_
 _unknown_
 yes
 no
+make
+miss
 up
 down
 left
 right
-on
+ons
 off
 stop
 go
